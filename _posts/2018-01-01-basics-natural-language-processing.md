@@ -7,24 +7,32 @@ Natural Language Processing, or NLP, is a branch of research within data science
 
 # Basics
 
-Text data is very often noisy, inherently unstructured, and riddled with the eccentricities present in all human language. Computers are also incapable of dealing with text directly and as such we need to process text data in order to transform it into a format that the computer can understand and effectively process.
+Text data is very often noisy, inherently unstructured, and riddled with the eccentricities present in all human language. Computers are incapable of dealing with text directly and we need to process text data in order to transform it into a format that the computer can understand and effectively process.
 
 ## Preprocessing
 
 Preprocessing in the context of NLP involves a number of techniques commonly applied to the text data, called the _corpus_, prior to modeling. Due to the subtlety and nuance present in all human languages, it is necessary to reduce the complexity within the data in order to make this data more manageable by the computer.
 
-### Tokenization
-
-The first step often taken when approaching a new text data set is _tokenization_. This is simply the process of breaking up a block of text into isolated component objects, or _tokens_. For instance, word tokenization would convert the following text
+First we need some text to work with. Fortunately NLTK provides datasets to work with. We will use text from Twitter for our examples.
 
 ```python
-"Lorem ipsum dolor sit amet"
+import nltk
+nltk.download('twitter_samples')
+
+tweet_ids = nltk.corpus.twitter_samples.fileids[2]
+tweet_texts = nltk.corpuse.twitter_samples.strings(tweet_ids)
 ```
 
-into 
+### Tokenization
+
+The first step often taken when approaching a new text data set is _tokenization_. This is simply the process of breaking up a block of text into isolated component objects, or _tokens_.
 
 ```python
-["Lorem", "ipsum", "dolor", "sit", "amet"]
+print(tweet_texts[0])
+
+nltk.download('punkt')
+tokenized_tweet = nltk.tokenize.word_tokenize(tweet_texts[0])
+print(tokenized_tweet)
 ```
 
 The most common token levels used is words and phrases. Phrase tokenization very often is done in conjunction with a dictionary of common phrases which ought to be interpreted together rather than as individual words. "Natural Language Processing", for instance, is a more informative token than splitting this into 3 individual tokens of "Natural", "Language", and "Processing". The process of tokenization supports further preprocessing methods as it will enable easier execution of logic upon each token within the text.
@@ -34,6 +42,32 @@ The most common token levels used is words and phrases. Phrase tokenization very
 Different tenses of a given word are often irrelevant to language modeling. For instance, a sentiment analysis application is unconcerned with whether the subject of a sentence is currently doing something, did it in the past, or intends to do it in the future. It is very likely that the expansion of a _lexicon_, or the vocabulary within the text data, which will greatly increase processing time and memory consumed will not improve the accuracy of the categorization. _Lexicon standardization_ is the process of replacing redundant representations of words or phrases with a root word in order to improve performance and simplify the data set.
 
 This is often done by _stemming_ or _lemmatization_. _Stemming_ is a simple rule-based approach to stripping words of suffixes. For instance, stemming would replace all instances of "giving", "given" and "give" with "giv". _Lemmatization_ is a more complex and organized method to finding root words for a given token. While more complex, it is more thorough in that it would be able to perform a similar operation as stemming on words with differing root letters. For instance, lemmatization would be able to replace all instances of "have", "having", and "had" with "have" whereas stemming would not be able to equate "had" with "have". Both of these methods are practically intended to condense the appearances of redundant representations to a single instance, such as reducing all instances of "listen", "listens", "listened", and "listening" to "listen".
+
+```python
+from nltk.stem.porter import PorterStemmer
+
+ps = PorterStemmer()
+
+print(ps.stem('crying'))
+print(ps.stem('running'))
+print(ps.stem('assumption'))
+
+stemmed_tweet = [ps.stem(t) for t in tokenized_tweet]
+print(stemmed_tweet)
+```
+
+```python
+nltk.download('wordnet')
+
+from nltk.stem import WordNetLemmatizer
+lem = WordNetLemmatizer()
+
+print(lem.lemmatize('wolves'))
+print(lem.lemmatize('cars'))
+print(lem.lemmatize('geese'))
+
+lemmed_tweet = [lem.lemmatize(t) for t in tokenized_tweet]
+```
 
 ### Object Standardization
 
