@@ -19,8 +19,8 @@ First we need some text to work with. Fortunately NLTK provides datasets to work
 import nltk
 nltk.download('twitter_samples')
 
-tweet_ids = nltk.corpus.twitter_samples.fileids[2]
-tweet_texts = nltk.corpuse.twitter_samples.strings(tweet_ids)
+tweet_ids = nltk.corpus.twitter_samples.fileids()[2]
+tweet_texts = nltk.corpus.twitter_samples.strings(tweet_ids)
 ```
 
 ### Tokenization
@@ -31,6 +31,7 @@ The first step often taken when approaching a new text data set is _tokenization
 print(tweet_texts[0])
 
 nltk.download('punkt')
+
 tokenized_tweet = nltk.tokenize.word_tokenize(tweet_texts[0])
 print(tokenized_tweet)
 ```
@@ -79,6 +80,18 @@ The process of addressing these issues is known as _object standardization_ and 
 
 Once the data set has been cleaned and preprocessed, it needs to be converted into a format that the computer can understand. Namely, the natural language needs to be translated into numbers which can be used as features for a learning algorithm. There are a variety of methods used to accomplish this.
 
+### Syntactic Parsing
+
+While the lexical content of a corpus is very informative, this very aspect of the text is only important to us for the purposes of interpretation as a consequence of the relationships within the content. For example, consider the former sentence. If one were to tokenize that sentence and randomize the order of the tokens, it would become extremely difficult to accurately interpret. Defining the parts of speech within the sentence, however, gives an easily interpretable picture of the sentence. This analysis of the grammar and the relationships between the words is known as _syntactic parsing_ and includes such methods as dependency trees and part of speech tagging.
+
+_Dependency trees_ are a grammatical representation of a parsed sentence which recursively identifies the relationships between all lexical items within the sentence. Each relationship is is represented by way of a triplet of the dependent, the relation and the governor. A dependency tree provides a powerful and easily interpreted view into a given sentence since it provides the context of each lexical item. 
+
+_Part of speech tagging_ is, as the name implies, the process of tagging each word within a sentence with the function and usage of it within the sentence. Part of speech tagging can be very helpful for the purposes of disambiguation, normalization, lemmatization, and stopword removal. Additionally, it can be used to generally improve word-based features by adding the context usage of the word to the feature.
+
+```python
+print(nltk.pos_tag(tokenized_tweet))
+```
+
 ### Entities
 
 The simplest and most obvious feature from the corpus are the _n-grams_ themselves. N-grams are word chunks where _n_ defines the number of words to be used. This feature extraction process results in a sparse matrix of one-hot encoded vectors where each column represents a token from the lexicon and each row represents an n-gram.
@@ -89,13 +102,12 @@ Sometimes it can be beneficial to direct an algorithm to very specific attribute
 
 Additionally, entities can be used as features by modeling directly upon the _topics_ identified within the text. These topics can be surfaced by examining patterns of co-occurring words within the corpus.
 
-### Syntactic Parsing
+```python
+nltk.download('maxent_ne_chunker')
+nltk.download('averaged_perceptron_tagger')
 
-While the lexical content of a corpus is very informative, this very aspect of the text is only important to us for the purposes of interpretation as a consequence of the relationships within the content. For example, consider the former sentence. If one were to tokenize that sentence and randomize the order of the tokens, it would become extremely difficult to accurately interpret. Defining the parts of speech within the sentence, however, gives an easily interpretable picture of the sentence. This analysis of the grammar and the relationships between the words is known as _syntactic parsing_ and includes such methods as dependency trees and part of speech tagging.
-
-_Dependency trees_ are a grammatical representation of a parsed sentence which recursively identifies the relationships between all lexical items within the sentence. Each relationship is is represented by way of a triplet of the dependent, the relation and the governor. A dependency tree provides a powerful and easily interpreted view into a given sentence since it provides the context of each lexical item. 
-
-_Part of speech tagging_ is, as the name implies, the process of tagging each word within a sentence with the function and usage of it within the sentence. Part of speech tagging can be very helpful for the purposes of disambiguation, normalization, lemmatization, and stopword removal. Additionally, it can be used to generally improve word-based features by adding the context usage of the word to the feature.
+print(nltk.ne_chunk(nltk.pos_tag(tokenized_tweet)))
+```
 
 ### Statistical Features
 
