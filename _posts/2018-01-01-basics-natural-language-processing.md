@@ -1,6 +1,7 @@
 ---
 layout: post
-title: Basics of Natural Lanugage Processing
+title: Basic Processes of Natural Lanugage Processing
+tags: NLP
 ---
 
 Natural Language Processing, or NLP, is a branch of research within data science intending to programmatically interpret, understand, or generate data in the form of natural human language. This field most commonly attempts to further the state of the art of such practices as machine translation of text between languages, information extraction, summarization, sentiment analysis, speech recognition, and subject categorization. These technologies are most frequently interacted with by consumers in the form of virtual assistants most obviously, but also text search engines and autocomplete functionalities now seen on mobile phones.
