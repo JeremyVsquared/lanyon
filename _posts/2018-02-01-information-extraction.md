@@ -223,7 +223,7 @@ data_test = data[int(len(data) * 0.9):]
 nec = NamedEntityTagger(data_train)
 
 # here assuming a preexisting variable containing the POS tagged text
-prsd_entities = nec.parse(pos_tagged_text)
+parsed_entities = nec.parse(pos_tagged_text)
 ```
 
 >[('OCCUPATION', 'Attorney General'), ('PERSON', 'Jeff Sessions'), 'has', 'named', 'interim', ('PLACE', 'United States'), 'attorneys', 'in', ('PLACE', 'Manhattan'), ',', 'one', 'of', 'the', 'countrys', 'most', 'prominent', 'federal', 'prosecutors', 'offices', ',', 'replacing', 'lawyers', 'who', 'had', 'served', 'as', 'top', 'deputies', 'to', ('PERSON', 'Obama'), 'appointees', '.']
