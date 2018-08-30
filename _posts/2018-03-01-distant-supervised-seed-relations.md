@@ -26,15 +26,15 @@ Embeddings can also be used and do not suffer from the computational limitations
 
 # Unsupervised Seed Generation
 
-This idea can be expanded further to a wholly unsupervised implementation by using relations found within text and using these as seeds. Because this process is automated and thus highly prone to error, some metric of suspicion should be applied to newly discovered patterns in order to determine whether or not they represent legitimate semantic relations. The simplest method to resolving this potential issue is to only keep patterns found some number of times within the text. For instance, a pattern may be identified but not fully trusted as valid until it has been found 5 more times with varying entities.
+Relation extraction by seed relations is a very effective method but one of the downsides is that that it requires a large amount of labeled relation seeds in order to become viable. In order to overcome this problem, it can be further expanded to a wholly unsupervised implementation by automatically extracting relations found within text and using these as seeds. Because this process is automated and thus highly prone to error, some metric of suspicion should be applied to newly discovered patterns in order to determine whether or not they represent legitimate semantic relations. The simplest method to resolving this potential issue is to only keep patterns found some number of times within the text. For instance, a pattern may be identified but not fully trusted as valid until it has been found 5 more times with varying entities.
 
 The process functions in the following order:
 
 1. Perform named entity recognition
 2. Extract potential entity relations based upon dependency paths
-3. Iterate through potential relations, normalizing the text by removing stop words and punctuation
-4. Count instances of similar relations, removing those that do not meet the threshold of instances
-5. Generalize the identified relations and apply to text corpus
+3. Generalize potential relations to generic patterns
+4. Validate relation patterns found
+5. Apply to text corpus
 
 ## 1. Perform named entity recognition
 
@@ -129,7 +129,7 @@ for relation in relations:
     relation_patterns.append(new_pattern)
 ```
 
-## 4. Count instances of similar relations, removing those that do not meet the threshold of instances
+## 4. Validate relation patterns found
 
 The potential relations now need to be validated which we will do by usage counts. For instance, if we have a relation that is only used once in a large corpus, the assumption is made that it is an invalid relation whereas the more frequently found potential relation is more likely to be valid. Here we are working with an unrealistically small corpus for demonstration purposes so we will skip this step.
 
